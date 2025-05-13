@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Twitter Scrubber</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Twitter Scrubber</h1>
+            <p class="tagline">Find and delete potentially problematic tweets from your timeline</p>
+        </header>
+        
+        <div class="main-content">
+            <div class="info-panel">
+                <h2>How It Works</h2>
+                <ol>
+                    <li>Enter your Twitter username (without @)</li>
+                    <li>Select a date range for scanning your tweets</li>
+                    <li>Our AI analyzes your tweets for potentially problematic content</li>
+                    <li>Review and manage your flagged tweets</li>
+                </ol>
+                <div class="pricing">
+                    <h3>One-Time Fee: $14.99</h3>
+                    <p>Get peace of mind by cleaning up your Twitter history</p>
+                </div>
+                
+                <div class="advanced-settings-toggle">
+                    <button type="button" id="toggleSettings" class="toggle-button">
+                        <span>Advanced Settings</span>
+                        <i class="arrow-icon">▼</i>
+                    </button>
+                </div>
+                
+                <div class="advanced-settings" id="advancedSettings" style="display: none;">
+                    <form action="{{ url_for('settings') }}" method="POST">
+                        <div class="form-group">
+                            <label for="sensitivity">Sensitivity Adjustment:</label>
+                            <div class="slider-container">
+                                <input type="range" min="0" max="1" step="0.05" id="sensitivity" name="sensitivity" value="{{ sensitivity }}" class="slider">
+                                <span id="sensitivity-value">{{ sensitivity }}</span>
+                            </div>
+                            <p class="setting-help">Higher values will flag more tweets. Lower values will be more lenient.</p>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="custom_keywords">Custom Offensive Keywords:</label>
+                            <textarea id="custom_keywords" name="custom_keywords" rows="4" placeholder="Enter comma-separated keywords">{{ keywords|join(', ') }}</textarea>
+                            <p class="setting-help">Enter your own comma-separated list of words or phrases to detect.</p>
+                        </div>
+                        
+                        <button type="submit" class="settings-button">Save Settings</button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="form-panel">
+                <h2>Analyze Your Tweets</h2>
+                <form action="{{ url_for('analyze') }}" method="POST" id="analyze-form">
+                    <div class="form-group">
+                        <label for="username">Twitter Username (without @):</label>
+                        <input type="text" id="username" name="username" placeholder="e.g. elonmusk" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="date_range">Date Range:</label>
+                        <select id="date_range" name="date_range" onchange="toggleDateInputs(this.value)">
+                            <option value="all_time">All Time</option>
+                            <option value="custom">Custom Range</option>
+                        </select>
+                    </div>
+                    
+                    <div id="custom_date" class="form-group date-inputs" style="display:none;">
+                        <div>
+                            <label for="start_date">Start Date:</label>
+                            <input type="date" id="start_date" name="start_date" max="{{ today }}">
+                        </div>
+                        <div>
+                            <label for="end_date">End Date:</label>
+                            <input type="date" id="end_date" name="end_date" max="{{ today }}" value="{{ today }}">
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="submit-button" id="analyze-button">Analyze Tweets</button>
+                </form>
+            </div>
+        </div>
+        
+        <footer>
+            <p>Twitter Scrubber &copy; 2025 - Helping you maintain a clean online presence</p>
+        </footer>
+    </div>
+    
+    <div class="processing-overlay" id="processing-overlay" style="display: none;">
+        <div class="processing-content">
+            <div class="loading-spinner"></div>
+            <h3>Analyzing Tweets</h3>
+            <p>Please wait while we analyze your tweets. This may take a few minutes depending on the number of tweets...</p>
+        </div>
+    </div>
+    
+    <script>
+        function toggleDateInputs(value) {
+            document.getElementById('custom_date').style.display = value === 'custom' ? 'block' : 'none';
+        }
+        
+        // Update the sensitivity value display when slider is moved
+        document.addEventListener('DOMContentLoaded', function() {
+            var slider = document.getElementById('sensitivity');
+            var output = document.getElementById('sensitivity-value');
+            
+            if (slider && output) {
+                slider.oninput = function() {
+                    output.innerHTML = this.value;
+                }
+            }
+            
+            // Toggle advanced settings when button is clicked
+            var toggleButton = document.getElementById('toggleSettings');
+            var advancedSettings = document.getElementById('advancedSettings');
+            var arrowIcon = document.querySelector('.arrow-icon');
+            
+            if (toggleButton && advancedSettings) {
+                toggleButton.onclick = function() {
+                    if (advancedSettings.style.display === 'none') {
+                        advancedSettings.style.display = 'block';
+                        arrowIcon.textContent = '▲';
+                    } else {
+                        advancedSettings.style.display = 'none';
+                        arrowIcon.textContent = '▼';
+                    }
+                }
+            }
+            
+            // Show loading spinner when analyze form is submitted
+            var analyzeForm = document.getElementById('analyze-form');
+            var analyzeButton = document.getElementById('analyze-button');
+            var processingOverlay = document.getElementById('processing-overlay');
+            
+            if (analyzeForm && processingOverlay) {
+                analyzeForm.addEventListener('submit', function() {
+                    // Disable the button
+                    if (analyzeButton) {
+                        analyzeButton.disabled = true;
+                        analyzeButton.textContent = 'Processing...';
+                    }
+                    
+                    // Show the overlay
+                    processingOverlay.style.display = 'flex';
+                });
+            }
+        });
+    </script>
+</body>
+</html> 

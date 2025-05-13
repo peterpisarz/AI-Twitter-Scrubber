@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Twitter Scrubber Results</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Twitter Scrubber Results</h1>
+            <a href="{{ url_for('index') }}" class="button">Back to Home</a>
+        </header>
+        
+        {% if error %}
+            <div class="error-message">{{ error }}</div>
+        {% endif %}
+        
+        <div class="results-summary">
+            <h2>Analysis Summary</h2>
+            
+            {% if payment_confirmed %}
+            <div class="payment-confirmation">
+                <div class="success-icon">✓</div>
+                <div class="confirmation-message">
+                    <h3>Payment Successful</h3>
+                    <p>Thank you for your purchase! You now have full access to your Twitter analysis.</p>
+                </div>
+            </div>
+            {% endif %}
+            
+            <div class="stats-container">
+                <div class="stat-item">
+                    <span class="stat-value">{{ tweets_analyzed }}</span>
+                    <span class="stat-label">Tweets Analyzed</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value">{{ tweets_flagged }}</span>
+                    <span class="stat-label">Potentially Inappropriate</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value">{{ pages_fetched }}</span>
+                    <span class="stat-label">Pages Retrieved</span>
+                </div>
+            </div>
+            
+            <div class="date-range-info">
+                <h3>Date Range</h3>
+                <p class="date-range-display">
+                    {% if date_range_type == 'all_time' %}
+                        <span class="date-badge">All Time</span>
+                    {% else %}
+                        <span class="date-badge-start">From: {{ start_date }}</span>
+                        <span class="date-badge-end">To: {{ end_date }}</span>
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+        
+        {% if tweets %}
+            <div class="tweets-list">
+                {% for tweet in tweets %}
+                    <div class="tweet-card">
+                        <div class="tweet-content">
+                            <div class="tweet-header">
+                                <span class="tweet-date">{{ tweet.date }}</span>
+                            </div>
+                            <p class="tweet-text">{{ tweet.text }}</p>
+                        </div>
+                        <div class="tweet-analysis">
+                            <h3>Analysis Details</h3>
+                            <div class="score-container">
+                                <div class="score-item">
+                                    <span class="score-label">Sentiment Score:</span>
+                                    <span class="score-value {% if tweet.sentiment_score > 0.8 %}high{% elif tweet.sentiment_score > 0.6 %}medium{% else %}low{% endif %}">
+                                        {{ tweet.sentiment_score }}
+                                    </span>
+                                </div>
+                                <div class="score-item">
+                                    <span class="score-label">Keyword Score:</span>
+                                    <span class="score-value {% if tweet.keyword_score > 0.3 %}high{% elif tweet.keyword_score > 0.1 %}medium{% else %}low{% endif %}">
+                                        {{ tweet.keyword_score }}
+                                    </span>
+                                </div>
+                                <div class="score-item">
+                                    <span class="score-label">Combined Score:</span>
+                                    <span class="score-value {% if tweet.combined_score > 0.8 %}high{% elif tweet.combined_score > 0.6 %}medium{% else %}low{% endif %}">
+                                        {{ tweet.combined_score }}
+                                    </span>
+                                </div>
+                            </div>
+                            
+                            {% if tweet.keyword_matches %}
+                                <div class="keywords">
+                                    <p class="keyword-label">Detected Keywords:</p>
+                                    <div class="keyword-list">
+                                        {% for keyword in tweet.keyword_matches %}
+                                            <span class="keyword-badge">{{ keyword }}</span>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            {% endif %}
+                            
+                            <div class="tweet-actions">
+                                <a href="{{ tweet.link }}" target="_blank" class="action-button">View on Twitter</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="no-results">
+                <p>No potentially offensive tweets found.</p>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html> 

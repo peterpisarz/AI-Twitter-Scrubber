@@ -1,0 +1,66 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Flask
+instance/
+.webassets-cache
+flask_session/
+
+# Environment variables
+.env
+.venv
+.flaskenv
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Twitter Scrubber specific
+config.local.py
+*.log
+logs/
+
+# OS specific
+.DS_Store
+Thumbs.db
+.directory
+
+# Stripe test credentials
+stripe_keys.txt
+
+# Twitter API credentials
+twitter_keys.txt
+socialdata_keys.txt
+
+# Data files
+*.csv
+*.json
+*.db
+*.sqlite
+
+# Cache
+.cache/ 

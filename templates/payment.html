@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Twitter Scrubber Payment</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://js.stripe.com/v3/"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Twitter Scrubber Payment</h1>
+            <p class="tagline">Just one step away from a cleaner Twitter profile</p>
+        </header>
+        
+        {% if error %}
+            <div class="error-message">{{ error }}</div>
+        {% endif %}
+        
+        {% if message %}
+            <div class="info-message">{{ message }}</div>
+        {% endif %}
+        
+        <div class="payment-content">
+            <div class="payment-details">
+                <h2>One-Time Fee</h2>
+                <div class="price-display">
+                    <span class="price">$14.99</span>
+                </div>
+                
+                {% if username %}
+                <div class="analysis-info">
+                    <h3>Analysis Details</h3>
+                    <p>You are about to analyze tweets for: <strong>@{{ username }}</strong></p>
+                </div>
+                {% endif %}
+                
+                <div class="payment-benefits">
+                    <h3>What You Get:</h3>
+                    <ul>
+                        <li>Comprehensive analysis of your Twitter history</li>
+                        <li>AI-powered detection of potentially problematic content</li>
+                        <li>Direct links to review and delete flagged tweets</li>
+                        <li>Peace of mind about your online presence</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="payment-form">
+                <form action="{{ url_for('payment') }}" method="POST" id="payment-form">
+                    <button type="submit" class="submit-button" id="submit-payment">Process Payment</button>
+                </form>
+                <div class="payment-disclaimer">
+                    <p>You'll be redirected to our secure payment processor powered by Stripe to complete your purchase.</p>
+                    <p>Your payment information is never stored on our servers.</p>
+                </div>
+                <a href="{{ url_for('index') }}" class="back-link">Back to Home</a>
+            </div>
+        </div>
+        
+        <footer>
+            <p>Twitter Scrubber &copy; 2025 - Helping you maintain a clean online presence</p>
+        </footer>
+    </div>
+    
+    <!-- Payment Processing Overlay -->
+    <div class="payment-processing" id="payment-processing" style="display: none;">
+        <div class="payment-processing-content">
+            <div class="loading-spinner"></div>
+            <h3>Processing Payment</h3>
+            <p>Please wait while we redirect you to the secure payment page...</p>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('payment-form');
+            const submitButton = document.getElementById('submit-payment');
+            const processingOverlay = document.getElementById('payment-processing');
+            
+            if (form) {
+                form.addEventListener('submit', function(event) {
+                    // Disable the submit button to prevent multiple submissions
+                    submitButton.disabled = true;
+                    submitButton.textContent = 'Processing...';
+                    
+                    // Show the processing overlay
+                    processingOverlay.style.display = 'flex';
+                    
+                    // The form submission will continue normally after a short delay
+                    // to show the loading animation
+                    setTimeout(function() {
+                        form.submit();
+                    }, 500);
+                    
+                    // Prevent the normal form submission since we're handling it with JavaScript
+                    event.preventDefault();
+                });
+            }
+        });
+    </script>
+</body>
+</html> 

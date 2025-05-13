@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Twitter Scrubber Ad</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            margin: 0;
+            background: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .ad-container {
+            width: 600px;
+            height: 600px;
+            background: #fff;
+            border: 1px solid #e1e8ed;
+            border-radius: 10px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        .split-screen {
+            display: flex;
+            height: 50%;
+        }
+        .before, .after {
+            width: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        .before {
+            background: #ffe6e6;
+        }
+        .after {
+            background: #e6ffed;
+        }
+        .before::before, .after::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            width: 40px;
+            height: 40px;
+            background-size: cover;
+        }
+        .before::before {
+            background-image: url('https://img.icons8.com/color/48/000000/twitter--v1.png');
+            filter: opacity(0.3);
+        }
+        .after::before {
+            background-image: url('https://img.icons8.com/color/48/000000/twitter--v1.png');
+        }
+        .before-text, .after-text {
+            font-size: 14px;
+            color: #333;
+            margin: 10px;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+        .before-text::before {
+            content: '⚠️ Problematic Tweet';
+            color: #E0245E;
+            font-weight: bold;
+            display: block;
+        }
+        .after-text::before {
+            content: '✅ Clean Profile';
+            color: #17BF63;
+            font-weight: bold;
+            display: block;
+        }
+        .content {
+            padding: 20px;
+            text-align: center;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .headline {
+            font-size: 24px;
+            font-weight: bold;
+            color: #1DA1F2;
+            margin-bottom: 10px;
+        }
+        .subheadline {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 15px;
+        }
+        .features {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: #333;
+        }
+        .features li::before {
+            content: '✔️';
+            margin-right: 5px;
+        }
+        .cta-button {
+            background: #1DA1F2;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 16px;
+            display: inline-block;
+            transition: background 0.3s;
+        }
+        .cta-button:hover {
+            background: #0d8ecf;
+        }
+        .footer {
+            font-size: 12px;
+            color: #666;
+            margin-top: 10px;
+        }
+        .twitter-logo {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            width: 30px;
+            opacity: 0.7;
+        }
+        /* Fix for example tweets */
+        .sample-tweets {
+            width: 100%;
+            padding: 10px;
+            text-align: left;
+        }
+        .tweet {
+            background: white;
+            border: 1px solid rgba(0,0,0,0.1);
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 8px;
+            font-size: 12px;
+            position: relative;
+        }
+        .bad-tweet {
+            border-left: 3px solid #E0245E;
+        }
+        .good-tweet {
+            border-left: 3px solid #17BF63;
+        }
+        .tweet-icon {
+            position: absolute;
+            right: 5px;
+            top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="ad-container">
+        <div class="split-screen">
+            <div class="before">
+                <div class="sample-tweets">
+                    <div class="tweet bad-tweet">
+                        I hate when people do this stupid thing!
+                        <span class="tweet-icon">⚠️</span>
+                    </div>
+                    <div class="tweet bad-tweet">
+                        This product is terrible. What a waste!
+                        <span class="tweet-icon">⚠️</span>
+                    </div>
+                </div>
+            </div>
+            <div class="after">
+                <div class="sample-tweets">
+                    <div class="tweet good-tweet">
+                        Really enjoying this new update!
+                        <span class="tweet-icon">✅</span>
+                    </div>
+                    <div class="tweet good-tweet">
+                        Just finished an amazing book.
+                        <span class="tweet-icon">✅</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="content">
+            <div>
+                <div class="headline">Clean Up Your Twitter Past</div>
+                <div class="subheadline">AI-powered analysis for just $14.99</div>
+                <p>Scan your Twitter history for potentially offensive tweets. Get direct links to delete them.</p>
+                <ul class="features">
+                    <li>Finds tweets others might find offensive</li>
+                    <li>Date range or all-time scanning</li>
+                    <li>One-time $14.99 fee</li>
+                </ul>
+            </div>
+            <a href="#" class="cta-button">SCRUB YOUR TWITTER NOW</a>
+            <div class="footer">#TwitterScrubber #OnlineReputation</div>
+        </div>
+        <img src="https://img.icons8.com/color/48/000000/twitter--v1.png" alt="Twitter Logo" class="twitter-logo">
+    </div>
+</body>
+</html> 

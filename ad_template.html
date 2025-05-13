@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Twitter Scrubber Ad Template</title>
+    <style>
+        :root {
+            --twitter-blue: #1DA1F2;
+            --twitter-dark-blue: #0d8ed9;
+            --danger-red: #E0245E;
+            --success-green: #17BF63;
+            --background-light: #f8f9fa;
+            --text-color: #14171a;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f8fa;
+        }
+        
+        .ad-container {
+            width: 1200px;
+            height: 628px; /* 1.91:1 ratio for Twitter cards */
+            background-color: white;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin: 20px auto;
+        }
+        
+        .ad-background {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(29, 161, 242, 0.1), white 70%);
+            z-index: 1;
+        }
+        
+        .ad-content {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            height: 100%;
+        }
+        
+        .ad-left {
+            flex: 1;
+            padding: 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .ad-right {
+            flex: 1;
+            background-color: var(--background-light);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .headline {
+            font-size: 48px;
+            font-weight: 800;
+            line-height: 1.2;
+            color: var(--text-color);
+            margin-bottom: 20px;
+        }
+        
+        .blue-text {
+            color: var(--twitter-blue);
+        }
+        
+        .subheadline {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--twitter-dark-blue);
+            margin-bottom: 20px;
+        }
+        
+        .body-copy {
+            font-size: 20px;
+            line-height: 1.5;
+            margin-bottom: 30px;
+            color: #657786;
+        }
+        
+        .features {
+            margin-bottom: 30px;
+        }
+        
+        .feature {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        
+        .feature-icon {
+            width: 24px;
+            height: 24px;
+            background-color: var(--twitter-blue);
+            border-radius: 50%;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+        
+        .feature-text {
+            font-size: 18px;
+            color: var(--text-color);
+        }
+        
+        .cta-button {
+            padding: 16px 32px;
+            background-color: var(--twitter-blue);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 10px;
+            display: inline-block;
+        }
+        
+        .cta-button:hover {
+            background-color: var(--twitter-dark-blue);
+        }
+        
+        .comparison {
+            position: absolute;
+            width: 90%;
+            height: 70%;
+            top: 15%;
+            left: 5%;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .comparison-header {
+            background-color: var(--twitter-blue);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 20px;
+        }
+        
+        .comparison-content {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+        }
+        
+        .before-column, .after-column {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+        }
+        
+        .before-column {
+            border-right: 1px solid #e1e8ed;
+        }
+        
+        .column-header {
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 10px;
+            padding: 5px;
+            border-radius: 4px;
+        }
+        
+        .before-header {
+            background-color: rgba(224, 36, 94, 0.1);
+            color: var(--danger-red);
+        }
+        
+        .after-header {
+            background-color: rgba(23, 191, 99, 0.1);
+            color: var(--success-green);
+        }
+        
+        .tweet {
+            border: 1px solid #e1e8ed;
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 10px;
+            position: relative;
+        }
+        
+        .tweet-bad {
+            background-color: rgba(224, 36, 94, 0.05);
+            border-left: 3px solid var(--danger-red);
+        }
+        
+        .tweet-good {
+            background-color: rgba(23, 191, 99, 0.05);
+            border-left: 3px solid var(--success-green);
+        }
+        
+        .flag-icon {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 12px;
+        }
+        
+        .red-flag {
+            background-color: var(--danger-red);
+            color: white;
+        }
+        
+        .green-check {
+            background-color: var(--success-green);
+            color: white;
+        }
+        
+        .logo {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            font-size: 20px;
+            font-weight: bold;
+            color: var(--twitter-blue);
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo-icon {
+            font-size: 24px;
+            margin-right: 5px;
+        }
+        
+        .price-tag {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: var(--twitter-blue);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <div class="ad-container">
+        <div class="ad-background"></div>
+        
+        <div class="price-tag">Just $14.99</div>
+        
+        <div class="ad-content">
+            <div class="ad-left">
+                <h1 class="headline">Clean Up Your <span class="blue-text">Twitter Past</span> Before Someone Else Finds It</h1>
+                
+                <p class="subheadline">AI-powered tweet analysis to protect your reputation</p>
+                
+                <p class="body-copy">Scan your entire Twitter history for potentially offensive content and delete anything that could damage your future opportunities.</p>
+                
+                <div class="features">
+                    <div class="feature">
+                        <div class="feature-icon">✓</div>
+                        <div class="feature-text">Finds tweets others might find offensive</div>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon">✓</div>
+                        <div class="feature-text">Direct links to delete problematic tweets</div>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon">✓</div>
+                        <div class="feature-text">One-time fee, no subscriptions</div>
+                    </div>
+                </div>
+                
+                <a href="#" class="cta-button">SCRUB YOUR TWITTER NOW</a>
+            </div>
+            
+            <div class="ad-right">
+                <div class="comparison">
+                    <div class="comparison-header">Before & After Twitter Scrubber</div>
+                    <div class="comparison-content">
+                        <div class="before-column">
+                            <div class="column-header before-header">RISKY TWEETS</div>
+                            <div class="tweet tweet-bad">
+                                I hate when people do this stupid thing. Absolutely idiotic behavior!
+                                <div class="flag-icon red-flag">!</div>
+                            </div>
+                            <div class="tweet tweet-bad">
+                                This product is terrible. What a waste of money!
+                                <div class="flag-icon red-flag">!</div>
+                            </div>
+                            <div class="tweet tweet-bad">
+                                Can't stand people who talk during movies. Shut up or get out!
+                                <div class="flag-icon red-flag">!</div>
+                            </div>
+                        </div>
+                        <div class="after-column">
+                            <div class="column-header after-header">CLEAN PROFILE</div>
+                            <div class="tweet tweet-good">
+                                Really enjoying the new update to this app. Great improvements!
+                                <div class="flag-icon green-check">✓</div>
+                            </div>
+                            <div class="tweet tweet-good">
+                                Just finished an amazing book. Highly recommend to everyone!
+                                <div class="flag-icon green-check">✓</div>
+                            </div>
+                            <div class="tweet tweet-good">
+                                What a beautiful day for a hike! Nature is truly inspiring.
+                                <div class="flag-icon green-check">✓</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="logo">
+            <span class="logo-icon">🧹</span> Twitter Scrubber
+        </div>
+    </div>
+</body>
+</html> 
